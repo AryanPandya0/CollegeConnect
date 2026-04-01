@@ -43,6 +43,11 @@ const userSchema = new mongoose.Schema({
     min: [1, 'Year must be between 1 and 6'],
     max: [6, 'Year must be between 1 and 6']
   },
+  graduationYear: {
+    type: Number,
+    min: [1950, 'Graduation year must be after 1950'],
+    max: [new Date().getFullYear() + 10, 'Graduation year is too far in the future']
+  },
   bio: {
     type: String,
     trim: true,
@@ -145,6 +150,7 @@ userSchema.methods.toPublicProfile = function () {
     college: this.college,
     course: this.course,
     year: this.year,
+    graduationYear: this.graduationYear,
     bio: this.bio,
     skills: this.skills,
     avatar: this.avatar,

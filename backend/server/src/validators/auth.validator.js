@@ -34,6 +34,12 @@ export const validateRegister = [
     .isLength({ max: 100 })
     .withMessage('Name cannot exceed 100 characters'),
 
+  body('role')
+    .optional()
+    .trim()
+    .isIn(['student', 'alumni'])
+    .withMessage('Role must be either student or alumni'),
+
   body('email')
     .trim()
     .notEmpty()
@@ -65,9 +71,18 @@ export const validateRegister = [
     .withMessage('Course cannot exceed 100 characters'),
 
   body('year')
-    .optional({ values: 'falsy' })
+    .if(body('role').equals('student'))
+    .notEmpty()
+    .withMessage('Year is required for students')
     .isInt({ min: 1, max: 6 })
     .withMessage('Year must be between 1 and 6'),
+
+  body('graduationYear')
+    .if(body('role').equals('alumni'))
+    .notEmpty()
+    .withMessage('Graduation year is required for alumni')
+    .isInt({ min: 1950, max: new Date().getFullYear() + 10 })
+    .withMessage('Please enter a valid graduation year'),
 
   body('bio')
     .optional({ values: 'falsy' })

@@ -1,6 +1,7 @@
 // User Roles
 export const USER_ROLES = {
   STUDENT: 'student',
+  ALUMNI: 'alumni',
   CAMPUS_LEAD: 'campusLead',
   ADMIN: 'admin'
 };

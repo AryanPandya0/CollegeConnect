@@ -34,7 +34,7 @@ export const generateTokens = (user) => {
  * @returns {Object} User and tokens
  */
 export const register = async (userData) => {
-  const { name, email, password, college, course, year, bio, skills } = userData;
+  const { name, email, password, college, course, year, graduationYear, bio, skills, role } = userData;
 
   // Check if user already exists
   const existingUser = await User.findOne({ email });
@@ -50,8 +50,10 @@ export const register = async (userData) => {
     college,
     course,
     year,
+    graduationYear,
     bio,
-    skills: skills || []
+    skills: skills || [],
+    role: role || 'student'
   });
 
   await user.save();
