@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
+import { toast } from 'react-hot-toast';
 
 const AuthContext = createContext();
 
@@ -17,7 +18,6 @@ export const AuthProvider = ({ children }) => {
     const checkAuth = async () => {
         const storedToken = localStorage.getItem('token');
         if (!storedToken) {
-            // Auto-login as guest
             try {
                 const response = await api.post('/auth/guest');
                 const { accessToken, user: userData } = response.data.data;
@@ -59,9 +59,12 @@ export const AuthProvider = ({ children }) => {
             setUser(userData);
             setToken(accessToken);
 
+            toast.success(`Welcome back, ${userData.name}!`);
             return userData;
         } catch (error) {
-            throw error.response?.data?.message || 'Login failed';
+            const message = error.response?.data?.message || 'Login failed';
+            toast.error(message);
+            throw message;
         }
     };
 
@@ -70,6 +73,7 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        toast.success('Logged out successfully');
         window.location.href = '/login';
     };
 
@@ -83,9 +87,12 @@ export const AuthProvider = ({ children }) => {
             setUser(newUser);
             setToken(accessToken);
 
+            toast.success('Account created! Welcome to the campus.');
             return newUser;
         } catch (error) {
-            throw error.response?.data?.message || 'Registration failed';
+            const message = error.response?.data?.message || 'Registration failed';
+            toast.error(message);
+            throw message;
         }
     };
 

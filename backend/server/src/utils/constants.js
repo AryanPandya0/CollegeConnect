@@ -115,6 +115,15 @@ export const REGEX = {
   COMMUNITY_NAME: /^[a-zA-Z0-9-]{3,30}$/
 };
 
+// Resource Categories
+export const RESOURCE_CATEGORIES = {
+  NOTES: 'notes',
+  EXAM_PAPER: 'exam-paper',
+  BOOK: 'book',
+  LINK: 'link',
+  OTHER: 'other'
+};
+
 // HTTP Status Codes
 export const HTTP_STATUS = {
   OK: 200,

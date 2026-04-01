@@ -90,13 +90,18 @@ export const recalculateAllCampusScores = async () => {
 
 /**
  * Get leaderboard of users by campus score
- * @param {number} limit - Number of users to return
+ * @param {Object} options - Options for leaderboard
  * @returns {Promise<Array>} Array of users sorted by campus score
  */
-export const getLeaderboard = async (limit = 10) => {
+export const getLeaderboard = async ({ limit = 10, college = null } = {}) => {
   try {
-    const users = await User.find({ isBanned: false })
-      .select('name avatar college campusScore')
+    const query = { isBanned: false };
+    if (college) {
+      query.college = college;
+    }
+
+    const users = await User.find(query)
+      .select('name avatar college campusScore role graduationYear')
       .sort({ campusScore: -1 })
       .limit(limit);
 

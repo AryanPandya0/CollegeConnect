@@ -2,10 +2,11 @@ import Avatar from '../ui/Avatar';
 import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import Button from '../ui/Button';
+import Badge from '../ui/Badge';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-hot-toast';
-import { ArrowBigUp, ArrowBigDown } from 'lucide-react';
+import { ArrowBigUp, ArrowBigDown, MessageCircle } from 'lucide-react';
 import clsx from 'clsx';
 
 const CommentItem = ({ comment, postId, onReplySuccess }) => {
@@ -73,11 +74,26 @@ const CommentItem = ({ comment, postId, onReplySuccess }) => {
             </div>
 
             <div className="flex-1 pb-4">
-                <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-bold text-gray-200">{comment.author.name}</span>
-                    <span className="text-xs text-gray-500">{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}</span>
+                <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                    <span className="text-xs font-black text-white/90">u/{comment.author.name}</span>
+                    
+                    {comment.author.role === 'ALUMNI' ? (
+                        <Badge variant="alumni" verified className="scale-90 origin-left">
+                            Alumni {comment.author.graduationYear ? `'${String(comment.author.graduationYear).slice(-2)}` : ''}
+                        </Badge>
+                    ) : comment.author.year && (
+                        <Badge variant="student" className="scale-90 origin-left">
+                            {comment.author.year === 1 ? 'Freshman' : 
+                             comment.author.year === 2 ? 'Sophomore' : 
+                             comment.author.year === 3 ? 'Junior' : 'Senior'}
+                        </Badge>
+                    )}
+
+                    <span className="text-[10px] text-gray-500 font-medium ml-1">
+                        {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                    </span>
                 </div>
-                <p className="text-sm text-gray-300">{comment.content}</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{comment.content}</p>
 
                 <div className="flex items-center gap-4 mt-2">
                     <div className="flex items-center gap-1">
@@ -107,17 +123,17 @@ const CommentItem = ({ comment, postId, onReplySuccess }) => {
                 </div>
 
                 {replying && (
-                    <form onSubmit={handleReplySubmit} className="mt-3 flex gap-2">
+                    <form onSubmit={handleReplySubmit} className="mt-4 flex flex-col gap-3 bg-dark-950/30 p-3 rounded-2xl border border-white/5 shadow-inner">
                         <textarea
                             value={replyContent}
                             onChange={(e) => setReplyContent(e.target.value)}
-                            placeholder="Reply..."
-                            className="flex-1 bg-dark-800 border border-dark-600 rounded-lg p-2 text-sm text-gray-200 focus:outline-none focus:border-gray-500 resize-none h-20"
+                            placeholder="Write your reply..."
+                            className="w-full bg-transparent text-sm text-gray-200 focus:outline-none resize-none h-24"
                             autoFocus
                         />
-                        <div className="flex flex-col gap-2">
-                            <Button type="submit" size="sm" disabled={!replyContent.trim()}>Reply</Button>
+                        <div className="flex justify-end gap-2 pr-1 pb-1">
                             <Button type="button" variant="ghost" size="sm" onClick={() => setReplying(false)}>Cancel</Button>
+                            <Button type="submit" size="sm" className="px-6" disabled={!replyContent.trim()}>Reply</Button>
                         </div>
                     </form>
                 )}

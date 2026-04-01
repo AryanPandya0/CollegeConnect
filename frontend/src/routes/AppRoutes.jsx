@@ -9,6 +9,8 @@ import ProfilePage from '../pages/ProfilePage';
 import ChatPage from '../pages/ChatPage';
 import Notifications from '../pages/Notifications';
 import CreatePost from '../pages/CreatePost';
+import Library from '../pages/Library';
+import Leaderboard from '../pages/Leaderboard';
 import { useAuth } from '../context/AuthContext';
 
 const PrivateRoute = ({ children }) => {
@@ -39,6 +41,8 @@ const AppRoutes = () => {
                 <Route path="chat" element={<ChatPage />} />
                 <Route path="notifications" element={<Notifications />} />
                 <Route path="submit" element={<CreatePost />} />
+                <Route path="library" element={<Library />} />
+                <Route path="leaderboard" element={<Leaderboard />} />
             </Route>
         </Routes>
     );

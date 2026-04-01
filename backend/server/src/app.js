@@ -20,6 +20,7 @@ import notificationRoutes from './routes/notification.routes.js';
 import jobRoutes from './routes/job.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import reportRoutes from './routes/report.routes.js';
+import resourceRoutes from './routes/resource.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

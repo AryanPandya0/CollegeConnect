@@ -16,9 +16,12 @@ export const PostProvider = ({ children }) => {
     postsRef.current = posts;
 
     const fetchPosts = useCallback(async (pageNum = 1, reset = false) => {
-        if (reset) {
+        if (loading && pageNum !== 1) return; // Prevent concurrent page loads
+        
+        if (reset || pageNum === 1) {
             setLoading(true);
         }
+        
         try {
             const response = await api.get(`/posts?sort=${sortBy}&page=${pageNum}`);
             const newPosts = response.data.data.posts;
@@ -32,16 +35,18 @@ export const PostProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    }, [sortBy]);
+    }, [sortBy, loading]);
 
     useEffect(() => {
+        setPage(1);
         fetchPosts(1, true);
     }, [sortBy]);
 
     const loadMore = useCallback(() => {
+        if (loading || !hasMore) return;
         const nextPage = page + 1;
         fetchPosts(nextPage, false);
-    }, [page, fetchPosts]);
+    }, [page, fetchPosts, loading, hasMore]);
 
     const vote = async (postId, type) => {
         const currentPosts = postsRef.current;

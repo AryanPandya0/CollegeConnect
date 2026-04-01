@@ -2,21 +2,21 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const Button = ({ children, variant = 'primary', size = 'md', className, ...props }) => {
-    const baseStyles = "inline-flex items-center justify-center font-bold rounded-full transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed";
+    const baseStyles = "inline-flex items-center justify-center font-bold rounded-2xl transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed border border-transparent";
 
     const variants = {
-        primary: "bg-gray-300 text-dark-900 hover:bg-white",
-        secondary: "bg-gray-700 text-white hover:bg-gray-600",
-        outline: "border border-gray-300 text-gray-300 hover:bg-gray-300/10",
-        ghost: "text-gray-400 hover:bg-dark-700 hover:text-gray-300",
-        danger: "bg-red-500 text-white hover:bg-red-400",
+        primary: "bg-primary text-white hover:brightness-110 shadow-orange-glow",
+        secondary: "bg-white/10 text-white hover:bg-white/20 border-white/5",
+        outline: "border-gray-500 text-gray-300 hover:bg-white/5 hover:border-gray-300",
+        ghost: "text-gray-400 hover:bg-white/5 hover:text-white",
+        danger: "bg-red-500/80 text-white hover:bg-red-500 shadow-lg shadow-red-500/20",
     };
 
     const sizes = {
-        sm: "px-3 py-1 text-xs",
-        md: "px-4 py-2 text-sm",
-        lg: "px-6 py-3 text-base",
-        icon: "p-2",
+        sm: "px-4 py-1.5 text-xs rounded-xl",
+        md: "px-5 py-2.5 text-sm",
+        lg: "px-7 py-3.5 text-base rounded-3xl",
+        icon: "p-2.5 rounded-xl",
     };
 
     return (

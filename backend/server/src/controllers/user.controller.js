@@ -274,8 +274,11 @@ export const getFollowing = asyncHandler(async (req, res) => {
  * GET /api/users/leaderboard
  */
 export const getLeaderboard = asyncHandler(async (req, res) => {
-  const limit = parseInt(req.query.limit) || 10;
-  const leaderboard = await getLeaderboardService(limit);
+  const { limit = 10, college = null } = req.query;
+  const leaderboard = await getLeaderboardService({ 
+    limit: parseInt(limit), 
+    college 
+  });
 
   res.status(HTTP_STATUS.OK).json(
     formatSuccess({
