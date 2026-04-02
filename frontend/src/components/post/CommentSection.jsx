@@ -77,7 +77,7 @@ const CommentItem = ({ comment, postId, onReplySuccess }) => {
                 <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                     <span className="text-xs font-black text-white/90">u/{comment.author.name}</span>
                     
-                    {comment.author.role === 'ALUMNI' ? (
+                    {comment.author.role === 'alumni' ? (
                         <Badge variant="alumni" verified className="scale-90 origin-left">
                             Alumni {comment.author.graduationYear ? `'${String(comment.author.graduationYear).slice(-2)}` : ''}
                         </Badge>

@@ -136,9 +136,31 @@ export const incrementDownload = asyncHandler(async (req, res) => {
   );
 });
 
+/**
+ * Handle document upload and return its URL
+ * POST /api/resources/upload
+ */
+export const uploadResourceFile = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(HTTP_STATUS.BAD_REQUEST).json(
+      formatError({ message: 'No file uploaded', statusCode: HTTP_STATUS.BAD_REQUEST })
+    );
+  }
+
+  const fileUrl = `/uploads/documents/${req.file.filename}`;
+
+  res.status(HTTP_STATUS.OK).json(
+    formatSuccess({
+      message: 'File uploaded successfully',
+      data: { url: fileUrl }
+    })
+  );
+});
+
 export default {
   createResource,
   getResources,
   deleteResource,
-  incrementDownload
+  incrementDownload,
+  uploadResourceFile
 };

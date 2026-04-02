@@ -3,6 +3,7 @@ import Badge from '../ui/Badge';
 import { formatDistanceToNow } from 'date-fns';
 import clsx from 'clsx';
 import { useAuth } from '../../context/AuthContext';
+import { getFileUrl } from '../../utils/imageUrl';
 
 const ResourceCard = ({ resource, onDelete, onDownload }) => {
     const { user: currentUser } = useAuth();
@@ -38,7 +39,7 @@ const ResourceCard = ({ resource, onDelete, onDownload }) => {
                         </button>
                     )}
                     <a 
-                        href={resource.url} 
+                        href={getFileUrl(resource.url)} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         onClick={() => onDownload(resource._id)}
@@ -82,7 +83,7 @@ const ResourceCard = ({ resource, onDelete, onDownload }) => {
                     <div className="flex flex-col">
                         <span className="text-[10px] font-bold text-gray-300 flex items-center gap-1">
                             {resource.author?.name}
-                            {resource.author?.role === 'ALUMNI' && <Badge variant="alumni" verified className="scale-75 origin-left" />}
+                            {resource.author?.role === 'alumni' && <Badge variant="alumni" verified className="scale-75 origin-left" />}
                         </span>
                         <span className="text-[9px] text-gray-500 font-medium italic">
                             {formatDistanceToNow(new Date(resource.createdAt), { addSuffix: true })}

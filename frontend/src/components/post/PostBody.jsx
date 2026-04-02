@@ -1,3 +1,5 @@
+import { getImageUrl } from '../../utils/imageUrl';
+
 const PostBody = ({ post }) => {
     return (
         <div className="mb-2">
@@ -11,7 +13,11 @@ const PostBody = ({ post }) => {
 
             {post.type === 'image' && post.images && post.images.length > 0 && (
                 <div className="mt-3 rounded-xl overflow-hidden border border-dark-600 max-h-[500px] flex justify-center bg-black">
-                    <img src={post.images[0]} alt={post.title} className="object-contain max-h-full" />
+                    <img 
+                        src={getImageUrl(post.images[0])} 
+                        alt={post.title} 
+                        className="object-contain max-h-full" 
+                    />
                 </div>
             )}
 

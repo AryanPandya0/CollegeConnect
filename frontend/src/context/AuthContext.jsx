@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
             toast.success(`Welcome back, ${userData.name}!`);
             return userData;
         } catch (error) {
-            const message = error.response?.data?.message || 'Login failed';
+            const message = error.response?.data?.errors?.[0]?.message || error.response?.data?.message || 'Login failed';
             toast.error(message);
             throw message;
         }
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
             toast.success('Account created! Welcome to the campus.');
             return newUser;
         } catch (error) {
-            const message = error.response?.data?.message || 'Registration failed';
+            const message = error.response?.data?.errors?.[0]?.message || error.response?.data?.message || 'Registration failed';
             toast.error(message);
             throw message;
         }

@@ -1,3 +1,4 @@
+import { getImageUrl } from '../../utils/imageUrl';
 import { twMerge } from 'tailwind-merge';
 import { User } from 'lucide-react';
 
@@ -13,7 +14,7 @@ const Avatar = ({ src, alt, size = 'md', className }) => {
     return (
         <div className={twMerge("rounded-full bg-dark-600 overflow-hidden flex-shrink-0 flex items-center justify-center", sizes[size], className)}>
             {src ? (
-                <img src={src} alt={alt || ''} className="w-full h-full object-cover" />
+                <img src={getImageUrl(src)} alt={alt || ''} className="w-full h-full object-cover" />
             ) : (
                 <User className="w-1/2 h-1/2 text-gray-400" />
             )}

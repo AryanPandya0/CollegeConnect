@@ -1,34 +1,65 @@
 import Avatar from '../ui/Avatar';
 import Button from '../ui/Button';
-import { Settings, Share2, Calendar, Edit2 } from 'lucide-react'; // Added Edit2
-import { formatDistanceToNow } from 'date-fns'; // Added import
+import Badge from '../ui/Badge';
+import { Settings, Share2, Calendar, Edit2, MessageSquare } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import EditProfileModal from './EditProfileModal';
+import { getOrCreateConversation } from '../../services/chatService';
+import { toast } from 'react-hot-toast';
 
 const ProfileHeader = ({ user, isOwnProfile, onUpdate }) => {
     const [showEditModal, setShowEditModal] = useState(false);
+    const [messageLoading, setMessageLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleMessage = () => {
+        setMessageLoading(true);
+        try {
+            navigate('/chat', { state: { selectedConversationId: user._id } });
+        } catch (error) {
+            console.error('Failed to navigate to conversation:', error);
+            toast.error('Could not start chat');
+        } finally {
+            setMessageLoading(false);
+        }
+    };
 
     return (
-        <div className="bg-dark-800 rounded-lg border border-dark-600 overflow-hidden mb-4">
+        <div className="bg-dark-800 rounded-lg border border-dark-600 overflow-hidden mb-4 shadow-premium">
             {/* Banner */}
-            <div className="h-32 bg-gradient-to-r from-gray-700 to-gray-900 relative">
+            <div className="h-40 bg-gradient-to-r from-primary-900/50 to-dark-900 relative">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
             </div>
 
-            <div className="px-4 pb-4">
-                <div className="flex justify-between items-end -mt-10 mb-4">
-                    <div className="relative">
-                        <Avatar src={user.avatar} size="xl" className="w-24 h-24 border-4 border-dark-800" />
+            <div className="px-6 pb-6 mt-[-3rem] relative z-10">
+                <div className="flex justify-between items-end mb-6">
+                    <div className="relative group">
+                        <Avatar src={user.avatar} size="xl" className="w-32 h-32 border-8 border-dark-800 shadow-premium group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
 
-                    <div className="flex gap-2 mb-1">
-                        <Button variant="outline" size="sm" className="rounded-full flex items-center gap-2">
+                    <div className="flex gap-3 mb-2">
+                        {!isOwnProfile && (
+                            <Button 
+                                variant="primary" 
+                                size="md" 
+                                className="rounded-2xl flex items-center gap-2 font-black shadow-orange-glow px-6 py-2"
+                                onClick={handleMessage}
+                                loading={messageLoading}
+                            >
+                                <MessageSquare className="w-4 h-4" /> Message
+                            </Button>
+                        )}
+                        <Button variant="outline" size="md" className="rounded-2xl flex items-center gap-2 border-white/10 hover:bg-white/5 transition-all text-sm font-black px-6 py-2 bg-dark-900/40 backdrop-blur-md">
                             <Share2 className="w-4 h-4" /> Share
                         </Button>
                         {isOwnProfile && (
                             <Button
                                 variant="outline"
-                                size="sm"
-                                className="rounded-full flex items-center gap-2"
+                                size="md"
+                                className="rounded-2xl flex items-center gap-2 border-white/10 hover:bg-primary/10 hover:border-primary/40 transition-all text-sm font-black px-6 py-2 bg-dark-900/40 backdrop-blur-md"
                                 onClick={() => setShowEditModal(true)}
                             >
                                 <Edit2 className="w-4 h-4" /> Edit Profile
@@ -37,7 +68,14 @@ const ProfileHeader = ({ user, isOwnProfile, onUpdate }) => {
                     </div>
                 </div>
 
-                <h1 className="text-2xl font-bold text-gray-200">{user.name}</h1>
+                <div className="flex items-center gap-3 mb-1">
+                    <h1 className="text-2xl font-bold text-gray-200">{user.name}</h1>
+                    {user.role === 'alumni' && (
+                        <Badge variant="alumni" verified className="scale-100">
+                            Verified Alumni
+                        </Badge>
+                    )}
+                </div>
                 <p className="text-gray-400 text-sm mb-4">{user.college || ''}</p>
                 {user.bio && <p className="text-gray-300 text-sm mb-4">{user.bio}</p>}
 

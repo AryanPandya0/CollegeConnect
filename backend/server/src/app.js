@@ -21,6 +21,7 @@ import jobRoutes from './routes/job.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import reportRoutes from './routes/report.routes.js';
 import resourceRoutes from './routes/resource.routes.js';
+import searchRoutes from './routes/search.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +29,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // CORS configuration
 app.use(cors({
@@ -50,7 +53,7 @@ if (env.NODE_ENV === 'development') {
 }
 
 // Rate limiting
-app.use('/api/', generalLimiter);
+// app.use('/api/', generalLimiter);
 
 // Static files for uploads
 app.use('/uploads', express.static(path.join(process.cwd(), env.UPLOAD_PATH)));
@@ -76,6 +79,8 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/resources', resourceRoutes);
+app.use('/api/search', searchRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

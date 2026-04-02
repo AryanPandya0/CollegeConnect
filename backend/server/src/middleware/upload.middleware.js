@@ -192,10 +192,72 @@ export const getFileUrl = (filename) => {
   return `/uploads/images/${filename}`;
 };
 
+// Document Upload Configuration
+const documentUploadDir = path.join(process.cwd(), env.UPLOAD_PATH || 'uploads', 'documents');
+if (!fs.existsSync(documentUploadDir)) {
+  fs.mkdirSync(documentUploadDir, { recursive: true });
+}
+
+const documentStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, documentUploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `doc-${uniqueSuffix}${ext}`);
+  }
+});
+
+const documentFilter = (req, file, cb) => {
+  if (FILE_UPLOAD.ALLOWED_DOCUMENT_TYPES.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Invalid file type. Only PDF, DOC, DOCX, PPT, PPTX are allowed.'), false);
+  }
+};
+
+const uploadDocument = multer({
+  storage: documentStorage,
+  fileFilter: documentFilter,
+  limits: {
+    fileSize: FILE_UPLOAD.MAX_DOCUMENT_SIZE || 10 * 1024 * 1024
+  }
+});
+
+export const uploadDocumentSingle = (fieldName) => {
+  return (req, res, next) => {
+    const uploadMiddleware = uploadDocument.single(fieldName);
+    
+    uploadMiddleware(req, res, (err) => {
+      if (err) {
+        if (err instanceof multer.MulterError) {
+          if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(HTTP_STATUS.BAD_REQUEST).json(
+              formatError({
+                message: `File size too large. Maximum size is ${(FILE_UPLOAD.MAX_DOCUMENT_SIZE || 10 * 1024 * 1024) / (1024 * 1024)}MB.`,
+                statusCode: HTTP_STATUS.BAD_REQUEST
+              })
+            );
+          }
+          return res.status(HTTP_STATUS.BAD_REQUEST).json(
+            formatError({ message: err.message, statusCode: HTTP_STATUS.BAD_REQUEST })
+          );
+        }
+        return res.status(HTTP_STATUS.BAD_REQUEST).json(
+          formatError({ message: err.message, statusCode: HTTP_STATUS.BAD_REQUEST })
+        );
+      }
+      next();
+    });
+  };
+};
+
 export default {
   uploadSingle,
   uploadMultiple,
   uploadFields,
   deleteFile,
-  getFileUrl
+  getFileUrl,
+  uploadDocumentSingle
 };

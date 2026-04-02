@@ -32,4 +32,12 @@ router.delete('/:id', authenticate, resourceController.deleteResource);
  */
 router.post('/:id/download', authenticate, resourceController.incrementDownload);
 
+/**
+ * @route   POST /api/resources/upload
+ * @desc    Upload a resource document
+ * @access  Private
+ */
+import { uploadDocumentSingle } from '../middleware/upload.middleware.js';
+router.post('/upload', authenticate, uploadDocumentSingle('document'), resourceController.uploadResourceFile);
+
 export default router;

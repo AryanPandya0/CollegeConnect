@@ -94,8 +94,11 @@ export const PAGINATION = {
 // File Upload
 export const FILE_UPLOAD = {
   ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  ALLOWED_DOCUMENT_TYPES: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
   MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB
-  IMAGE_PATH: 'uploads/images/'
+  MAX_DOCUMENT_SIZE: 10 * 1024 * 1024, // 10MB
+  IMAGE_PATH: 'uploads/images/',
+  DOCUMENT_PATH: 'uploads/documents/'
 };
 
 // Validation Constants

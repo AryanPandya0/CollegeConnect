@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const PostHeader = ({ post }) => {
     const communityName = post.community?.name || post.community || 'unknown';
     const author = post.author;
-    const isAlumni = author?.role === 'ALUMNI';
+    const isAlumni = author?.role === 'alumni';
     const gradYear = author?.graduationYear ? String(author.graduationYear).slice(-2) : null;
 
     return (

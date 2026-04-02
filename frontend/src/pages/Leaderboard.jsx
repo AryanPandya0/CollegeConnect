@@ -166,7 +166,7 @@ const Leaderboard = () => {
                                         </span>
                                         <div className="relative">
                                             <Avatar src={user.avatar} size="md" />
-                                            {user.role === 'ALUMNI' && (
+                                            {user.role === 'alumni' && (
                                                 <div className="absolute -bottom-1 -right-1">
                                                     <Badge variant="alumni" verified className="scale-50 origin-bottom-right" />
                                                 </div>

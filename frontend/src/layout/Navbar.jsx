@@ -1,6 +1,7 @@
 import { Search, Bell, MessageSquare, Plus, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { getImageUrl } from '../utils/imageUrl';
 
 const Navbar = () => {
     const { user } = useAuth();
@@ -54,7 +55,7 @@ const Navbar = () => {
                         <button onClick={() => navigate(`/u/${user._id || user.id}`)} className="flex items-center gap-2 hover:bg-white/5 p-1 rounded-xl transition-all group">
                             <div className="w-8 h-8 rounded-xl bg-dark-600 overflow-hidden flex items-center justify-center text-white text-sm font-bold border border-white/10 shadow-premium">
                                 {user.avatar ? (
-                                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                                    <img src={getImageUrl(user.avatar)} alt={user.name} className="w-full h-full object-cover" />
                                 ) : (
                                     user.name?.charAt(0)?.toUpperCase()
                                 )}

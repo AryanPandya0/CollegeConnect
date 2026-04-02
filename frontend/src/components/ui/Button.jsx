@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const Button = ({ children, variant = 'primary', size = 'md', className, ...props }) => {
+const Button = ({ children, variant = 'primary', size = 'md', className, loading, disabled, ...props }) => {
     const baseStyles = "inline-flex items-center justify-center font-bold rounded-2xl transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed border border-transparent";
 
     const variants = {
@@ -21,9 +21,11 @@ const Button = ({ children, variant = 'primary', size = 'md', className, ...prop
 
     return (
         <button
+            disabled={loading || disabled}
             className={twMerge(baseStyles, variants[variant], sizes[size], className)}
             {...props}
         >
+            {loading ? <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin mr-2" /> : null}
             {children}
         </button>
     );

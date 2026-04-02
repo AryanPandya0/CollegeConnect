@@ -94,7 +94,7 @@ const ChatSidebar = ({ activeChatId, onSelectChat }) => {
                                 <div className="flex justify-between items-baseline mb-0.5">
                                     <h3 className={clsx("font-bold text-xs truncate transition-colors flex items-center gap-1", activeChatId === chat.user._id ? "text-white" : "text-gray-300 group-hover:text-white")}>
                                         {chat.user.name}
-                                        {chat.user.role === 'ALUMNI' && (
+                                        {chat.user.role === 'alumni' && (
                                             <span className="text-cyan-400" title="Verified Alumni">
                                                 <CheckCircle2 className="w-3 h-3 fill-current/10" />
                                             </span>
