@@ -22,7 +22,9 @@ export const globalSearch = asyncHandler(async (req, res) => {
     );
   }
 
-  const query = { $regex: q, $options: 'i' };
+  // Escape special regex characters to prevent ReDoS/Injection
+  const escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const query = { $regex: escapedQ, $options: 'i' };
 
   // Run in parallel for performance
   const [users, communities, resources] = await Promise.all([
